@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carlos Gonzales — GNC</title>
+<meta name="description" content="Aerospace engineer working in guidance, navigation and control. Builder of a 6-DOF orbital rendezvous and docking simulator.">
+<style>
+  :root{
+    --bg:#08090c;
+    --bg-2:#0e1015;
+    --line:#1c2029;
+    --text:#e7e9ee;
+    --muted:#878d9b;
+    --accent:#5ac8fa;
+    --warm:#ff9f45;
+    --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --maxw:760px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:var(--sans);font-size:17px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* ---------- hero ---------- */
+  #stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+  .hero{
+    position:relative;z-index:1;min-height:100svh;
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 20px;
+  }
+  h1{
+    font-size:clamp(44px,9vw,76px);line-height:1.02;letter-spacing:-.03em;
+    margin:0 0 22px;font-weight:600;
+  }
+  .lede{font-size:clamp(18px,2.4vw,21px);color:var(--muted);margin:0 0 14px;max-width:60ch}
+  .lede strong{color:var(--text);font-weight:500}
+  .scroll-cue{
+    margin-top:56px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:10px;
+  }
+  .scroll-cue span{animation:bob 2.2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+  /* ---------- sections ---------- */
+  section{position:relative;z-index:1;padding:104px 0;border-top:1px solid var(--line)}
+  section:first-of-type{border-top:none}
+  .label{
+    font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 28px;
+  }
+  h2{font-size:clamp(28px,4.4vw,38px);letter-spacing:-.02em;line-height:1.15;margin:0 0 20px;font-weight:600}
+  h3{font-size:19px;margin:0 0 4px;font-weight:600;letter-spacing:-.01em}
+  p{margin:0 0 18px}
+  .muted{color:var(--muted)}
+
+  /* ---------- capability list ---------- */
+  .caps{list-style:none;padding:0;margin:32px 0 0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+  .caps li{background:var(--bg-2);padding:20px 22px}
+  .caps b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:7px;font-weight:500}
+  .caps span{color:var(--muted);font-size:15.5px;line-height:1.6}
+
+  /* ---------- roles ---------- */
+  .role{padding:22px 0;border-bottom:1px solid var(--line)}
+  .role:last-child{border-bottom:none}
+  .role-top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .dates{font-family:var(--mono);font-size:12.5px;color:var(--muted);white-space:nowrap}
+  .role p{margin:8px 0 0;color:var(--muted);font-size:15.5px}
+
+  /* ---------- play CTA ---------- */
+  .play{
+    display:block;background:var(--bg-2);border:1px solid var(--line);
+    padding:40px 34px;margin-top:8px;transition:border-color .18s ease,transform .18s ease;
+  }
+  .play:hover{border-color:var(--accent);text-decoration:none;transform:translateY(-2px)}
+  .play h2{margin-bottom:12px}
+  .play .go{
+    font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);display:inline-block;margin-top:20px;
+  }
+  .play p{color:var(--muted);margin:0;max-width:52ch}
+
+  /* ---------- misc ---------- */
+  .mini{margin:0;padding:0;list-style:none}
+  .mini li{padding:16px 0;border-bottom:1px solid var(--line)}
+  .mini li:last-child{border-bottom:none}
+  .mini p{margin:6px 0 0;color:var(--muted);font-size:15.5px}
+
+  .credits{font-size:14.5px;color:var(--muted)}
+  .credits p{margin:0 0 14px}
+
+  footer{
+    position:relative;z-index:1;border-top:1px solid var(--line);
+    padding:44px 0 60px;font-size:15px;
+  }
+  .links{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:16px;font-family:var(--mono);font-size:13.5px}
+
+  /* ---------- reveal ---------- */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+  .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none;transition:none}
+    .scroll-cue span{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Guidance · Navigation · Control</p>
+    <h1>Carlos Gonzales</h1>
+    <p class="lede">Aerospace engineer with <strong>4+ years of flight hardware experience</strong> and a current Top Secret clearance, moving into GNC.</p>
+    <p class="lede">I built a 6-DOF orbital rendezvous and docking simulator from scratch — relative dynamics, state estimation, and control — and verified it against analytic solutions in CI.</p>
+    <a class="scroll-cue" href="#work">Scroll <span>↓</span></a>
+  </header>
+
+  <section id="work" class="rv">
+    <p class="label">What I build</p>
+    <h2>A full GNC stack, end to end.</h2>
+    <p class="muted">The docking simulator is where the GNC work lives. Every piece below is implemented, tested, and running in the browser.</p>
+    <ul class="caps">
+      <li>
+        <b>Dynamics</b>
+        <span>RK4 Clohessy–Wiltshire truth dynamics, rigid-body attitude with thruster torques, and a 16-jet RCS model with injectable failure states — verified against a closed-form analytic oracle in CI.</span>
+      </li>
+      <li>
+        <b>Navigation</b>
+        <span>ANEES-gated 6-state EKF for relative translation, plus an attitude MEKF with gyro-bias estimation and star-tracker updates.</span>
+      </li>
+      <li>
+        <b>Control</b>
+        <span>V-bar guidance with PID and LQR, and a constrained active-set QP MPC terminal approach enforcing approach-corridor and capture-envelope limits.</span>
+      </li>
+      <li>
+        <b>Allocation &amp; Safety</b>
+        <span>Bounded-NNLS force/torque allocation across the jet set, with two-level corridor monitoring and automatic passive-abort safing burns.</span>
+      </li>
+      <li>
+        <b>Verification</b>
+        <span>A seeded Monte Carlo harness scoring docking outcome, propellant use, and time margin across randomized dispersions.</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="rv">
+    <p class="label">Play it</p>
+    <!-- Point PLAY_URL at the deployed sim once Cloudflare Pages is live (e.g. https://sim.example.dev) -->
+    <a class="play" id="play-link" href="https://github.com/crgonzales/docking-sim">
+      <h2>Fly the docking sim →</h2>
+      <p>Manual RCS control or full autonomy. Take a chaser from station-keeping to a soft capture — or watch the MPC do it and abort out of a bad corridor.</p>
+      <span class="go">Launch</span>
+    </a>
+  </section>
+
+  <section class="rv">
+    <p class="label">Experience</p>
+    <h2>Lockheed Martin</h2>
+    <p class="muted">Sunnyvale, CA · Flight hardware</p>
+
+    <div class="role">
+      <div class="role-top"><h3>Electromechanical Engineer</h3><span class="dates">May 2024 — Aug 2026</span></div>
+      <p>Drove flight hardware mechanical design, qualification test fixture development, product definition, and drawing release. Flowed top-level requirements from Systems, RF, manufacturing, and quality into mechanical and electrical documentation.</p>
+    </div>
+    <div class="role">
+      <div class="role-top"><h3>Mechanical Engineer</h3><span class="dates">Jun 2023 — May 2024</span></div>
+      <p>Maintained flight and GSE drawing sets through Windchill change tasks. Owned BOM documentation, vendor coordination, and DFM feedback; tracked long-lead items against build schedules.</p>
+    </div>
+    <div class="role">
+      <div class="role-top"><h3>Engineering Aide</h3><span class="dates">Jul 2022 — Jun 2023</span></div>
+      <p>Incorporated engineer redlines and GD&amp;T corrections into drawings and processed change requests through engineering release.</p>
+    </div>
+  </section>
+
+  <section class="rv">
+    <p class="label">Also</p>
+    <ul class="mini">
+      <li>
+        <h3>SPARK CubeSat Payload — IREC 2023</h3>
+        <p>Co-designed the 3U mechanical frame and printed payload panels; programmed the Arduino payload to log and transmit temperature, pressure, CO₂, humidity, and GPS through a 10,000 ft rocket flight.</p>
+      </li>
+      <li>
+        <h3>NACA 4412 Aerodynamic Analysis</h3>
+        <p>3D RANS k-ω simulation of a tapered half-wing in STAR-CCM+ at Re 5×10⁶, 0–10° AOA. Lift and moment coefficients matched finite-wing theory within 8% and 2.5%; recovered the published C<sub>m,ac</sub> ≈ −0.10 by sweeping the moment reference along the MAC.</p>
+      </li>
+      <li>
+        <h3>Robotic Arm with EMG Sensor</h3>
+        <p>Signal conditioning and thresholding to reject electrode noise, advancing control from on/off triggering to proportional grip actuation.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="rv">
+    <p class="label">Education</p>
+    <ul class="mini">
+      <li>
+        <div class="role-top"><h3>M.S. Artificial Intelligence</h3><span class="dates">Oct 2023 — Jun 2027 (exp.)</span></div>
+        <p>San José State University — PyTorch, classification, anomaly detection, computer vision.</p>
+      </li>
+      <li>
+        <div class="role-top"><h3>B.S. Aerospace Engineering</h3><span class="dates">Jan 2020 — Dec 2023</span></div>
+        <p>San José State University — structures, CFD, CubeSat payload development.</p>
+      </li>
+      <li>
+        <div class="role-top"><h3>A.S. Engineering, Mathematics &amp; Physics</h3><span class="dates"></span></div>
+        <p>College of the Sequoias.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="rv" id="credits">
+    <p class="label">Credits</p>
+    <div class="credits">
+      <p>Starfield — “The Milky Way panorama” by ESO/S. Brunier.
+         <a href="https://www.eso.org/public/images/eso0932a/" target="_blank" rel="noopener">Source</a> ·
+         licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+         Modified: downscaled to 4096×2048.</p>
+      <p>Earth surface, night-lights, and specular textures — NASA imagery (public domain), via the three.js example assets.</p>
+      <p>Simulator built with three.js and React Three Fiber. Open-source dependencies are MIT licensed.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="links">
+      <a href="mailto:carlos.roberto.gonzales@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/crgonzales" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/crgonzales" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p class="muted" style="margin:0;font-size:14px">San Jose, CA</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* scroll reveal */
+  var items = document.querySelectorAll('.rv');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    items.forEach(function(el){ io.observe(el); });
+  }
+
+  /* drifting starfield */
+  var c = document.getElementById('stars'), ctx = c.getContext('2d');
+  var dpr = Math.min(window.devicePixelRatio || 1, 2), stars = [], W, H;
+
+  function build(){
+    W = c.clientWidth; H = c.clientHeight;
+    c.width = W * dpr; c.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var n = Math.min(220, Math.round(W * H / 7000));
+    stars = [];
+    for (var i = 0; i < n; i++){
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.1 + 0.25,
+        a: Math.random() * 0.5 + 0.15,
+        v: Math.random() * 0.018 + 0.004
+      });
+    }
+  }
+
+  function paint(advance){
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#cfd8ea';
+    for (var i = 0; i < stars.length; i++){
+      var s = stars[i];
+      ctx.globalAlpha = s.a;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, 6.283);
+      ctx.fill();
+      if (advance){
+        s.y += s.v;
+        if (s.y > H) { s.y = -2; s.x = Math.random() * W; }
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function loop(){ paint(true); requestAnimationFrame(loop); }
+
+  function reset(){ build(); paint(false); }
+
+  reset();
+  addEventListener('resize', reset);
+  if (!reduce) requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>
