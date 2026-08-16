@@ -10,35 +10,58 @@ python3 -m http.server 8000
 # → http://localhost:8000
 ```
 
-## Deploy (Cloudflare Pages)
+## Deploy
 
-Dashboard → Workers & Pages → Create → Pages → Connect to Git.
-
-| Setting             | Value      |
-| ------------------- | ---------- |
-| Framework preset    | None       |
-| Build command       | *(empty)*  |
-| Build output directory | `/`     |
-
-No build step, so no Node version or install command is needed. Add the apex domain
-under **Custom domains** once the first deploy is green.
+Deployed as a Cloudflare Worker with static assets (`carlosgonzales-site`), served on the
+apex domain `carlosgonzales.dev`. Workers Builds is connected to this repo: every push to
+`main` runs `npx wrangler deploy` and publishes a new version automatically. No build
+command, no Node version, no install step.
 
 CLI alternative (authenticate first with `npx wrangler login` — never paste an API key
 into a chat or commit one):
 
 ```sh
-npx wrangler pages deploy . --project-name=carlosgonzales-site
+npx wrangler deploy
 ```
 
 ## Wiring the sim
 
-The **Play** section links to `#play-link` in `index.html`. It currently points at the
-GitHub repo. Once the simulator itself is deployed, change that `href` to the sim's URL.
+The simulator lives in the separate `docking-sim` repo and is deployed on its own as a
+Cloudflare Pages project: **https://docking-sim.pages.dev**. It is embedded here rather
+than merged in.
+
+Two places reference it, and they must stay in sync:
+
+| Where | Value | Purpose |
+| ------------------------------- | -------------------------------- | ------------------------------------------------- |
+| `SIM_URL` (2nd `<script>` block) | `https://docking-sim.pages.dev/` | `src` of the background `<iframe>` |
+| `#play-link` `href` | `/docking-sim` | Shareable link / fallback for non-immersive visits |
+
+`carlosgonzales.dev/docking-sim` is a Cloudflare **Redirect Rule** (302, wildcard
+`https://carlosgonzales.dev/docking-sim*`) pointing at the Pages deployment. It is a
+redirect, not a reverse proxy — serving the sim *at* that path without a redirect would
+require rebuilding it with Vite `base: '/docking-sim/'`.
+
+### How the embed behaves
+
+- The sim runs in a fixed, full-viewport `<iframe>` behind the content, blurred, dimmed
+  and `pointer-events: none`.
+- It is loaded on `window.load` + 400 ms so the three.js bundle never competes with
+  first paint.
+- Clicking **Play** adds `body.focused`: the iframe sharpens and becomes interactive,
+  the portfolio text and starfield fade out. **← Back to portfolio** or **Escape**
+  reverses it.
+- Narrow viewports, touch devices and `prefers-reduced-motion: reduce` skip the embed
+  entirely and just follow the `#play-link` href.
+
+If the sim ever moves, check that the new host does not send `X-Frame-Options: DENY` or a
+restrictive `Content-Security-Policy: frame-ancestors` — the whole approach depends on it
+being iframe-able. Cloudflare Pages does not set either by default.
 
 ## Content notes
 
 - Copy is drawn from the GNC resume. Phone number and street-level address are
-  deliberately omitted — public page.
+deliberately omitted — public page.
 - The **Credits** section carries the CC BY 4.0 attribution required for the ESO
-  starmap used in the simulator (creator, license, link, and the modification note).
-  Keep it in sync with `apps/web/public/assets/ASSETS.md` in the sim repo.
+starmap used in the simulator (creator, license, link, and the modification note).
+Keep it in sync with `apps/web/public/assets/ASSETS.md` in the sim repo.
