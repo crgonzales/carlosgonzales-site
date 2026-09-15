@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carlos Gonzales — GNC</title>
-<meta name="description" content="Aerospace engineer working in guidance, navigation and control. Builder of a 6-DOF orbital rendezvous and docking simulator.">
+<title>Carlos Gonzales | GNC &amp; Autonomous Systems</title>
+<meta name="description" content="Aerospace engineer with four years at Lockheed Martin. Spacecraft dynamics and docking autopilot design in MATLAB/Simulink, plus perception for autonomous vehicles.">
 <style>
 :root{
 --bg:#08090c;
@@ -41,7 +41,7 @@ position:absolute;top:50%;left:50%;width:100%;height:100%;
 min-width:1280px;min-height:720px;
 transform:translate(-50%,-50%) scale(1.12);
 border:0;pointer-events:none;
-filter:blur(14px) brightness(.55) saturate(.9);
+filter:blur(14px) brightness(.22) saturate(.9);
 transition:filter 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1);
 }
 body.focused #sim-frame{
@@ -74,7 +74,7 @@ h1{
 font-size:clamp(44px,9vw,76px);line-height:1.02;letter-spacing:-.03em;
 margin:0 0 22px;font-weight:600;
 }
-.lede{font-size:clamp(18px,2.4vw,21px);color:var(--muted);margin:0 0 14px;max-width:60ch}
+.lede{font-size:clamp(18px,2.4vw,21px);color:#adb3be;margin:0 0 14px;max-width:60ch}
 .lede strong{color:var(--text);font-weight:500}
 .scroll-cue{
 margin-top:56px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;
@@ -160,37 +160,43 @@ html{scroll-behavior:auto}
 <header class="hero">
 <p class="eyebrow">Guidance · Navigation · Control</p>
 <h1>Carlos Gonzales</h1>
-<p class="lede">Aerospace engineer with <strong>4+ years of flight hardware experience</strong> and a current Top Secret clearance, moving into GNC.</p>
-<p class="lede">I built a 6-DOF orbital rendezvous and docking simulator from scratch — relative dynamics, state estimation, and control — and verified it against analytic solutions in CI.</p>
+<p class="lede">I’m an aerospace engineer with <strong>four years at Lockheed Martin</strong> developing flight hardware and test equipment.</p>
+<p class="lede">My independent work brings together <strong>spacecraft dynamics, docking autopilot design and autonomous driving perception</strong>. I build models, test their behavior and make the results visible through interactive simulation.</p>
+<p class="lede">I’m pursuing a GNC role while completing a master’s in artificial intelligence at San José State. U.S. citizen with a Top Secret clearance.</p>
 <a class="scroll-cue" href="#work">Scroll <span>↓</span></a>
 </header>
 
 <section id="work" class="rv">
-<p class="label">What I build</p>
-<h2>A full GNC stack, end to end.</h2>
-<p class="muted">The docking simulator is where the GNC work lives. Every piece below is implemented, tested, and running in the browser.</p>
+<p class="label">Featured project · Guidance, navigation and control</p>
+<h2>Orbital docking simulator</h2>
+<p class="muted">I developed a MATLAB/Simulink spacecraft dynamics model and an interactive docking simulator, comparing their responses during normal operation and thruster failures. The project connects six degrees of freedom, navigation and feedback control to a mission you can watch or fly.</p>
 <ul class="caps">
 <li>
+<b>MATLAB / Simulink</b>
+<span>Executable dynamics models with 100 Hz integration, quaternion attitude and a 16-thruster reaction control system. Compared MATLAB, Simulink and browser simulator trajectories in nominal and stuck-thruster cases; designed an LQR controller and assessed closed loop stability.</span>
+</li>
+<li>
 <b>Dynamics</b>
-<span>RK4 Clohessy–Wiltshire truth dynamics, rigid-body attitude with thruster torques, and a 16-jet RCS model with injectable failure states — verified against a closed-form analytic oracle in CI.</span>
+<span>Clohessy–Wiltshire relative orbital motion and rigid body attitude dynamics with thruster forces, torques, fuel use and injectable faults. Verified against analytical solutions, coordinate transformation checks and conservation laws.</span>
 </li>
 <li>
 <b>Navigation</b>
 <span>ANEES-gated 6-state EKF for relative translation, plus an attitude MEKF with gyro-bias estimation and star-tracker updates.</span>
 </li>
 <li>
-<b>Control</b>
-<span>V-bar guidance with PID and LQR, and a constrained active-set QP MPC terminal approach enforcing approach-corridor and capture-envelope limits.</span>
+<b>Docking autopilot</b>
+<span>V-bar approach guidance with PID and LQR feedback, plus constrained model predictive control for terminal approach. The autopilot regulates closing speed and alignment while enforcing approach corridor and capture limits.</span>
 </li>
 <li>
 <b>Allocation &amp; Safety</b>
-<span>Bounded-NNLS force/torque allocation across the jet set, with two-level corridor monitoring and automatic passive-abort safing burns.</span>
+<span>Bounded force and torque allocation across the thrusters, with corridor monitoring and automatic abort burns when an approach becomes unsafe.</span>
 </li>
 <li>
 <b>Verification</b>
-<span>A seeded Monte Carlo harness scoring docking outcome, propellant use, and time margin across randomized dispersions.</span>
+<span>Seeded Monte Carlo analysis scores docking outcome, propellant use and time margin across randomized dispersions. Regression tests cover dynamics, navigation and actuator behavior.</span>
 </li>
 </ul>
+<p style="margin-top:24px"><a href="https://github.com/crgonzales/docking-sim" target="_blank" rel="noopener">Source code and documentation →</a></p>
 </section>
 
 <section class="rv">
@@ -198,9 +204,27 @@ html{scroll-behavior:auto}
 <!-- /docking-sim is a Cloudflare redirect rule pointing at the deployed sim (docking-sim.pages.dev). -->
 <a class="play" id="play-link" href="/docking-sim">
 <h2>Fly the docking sim →</h2>
-<p>Manual RCS control or full autonomy. Take a chaser from station-keeping to a soft capture — or watch the MPC do it and abort out of a bad corridor.</p>
+<p>Fly with manual thruster control or watch the docking autopilot guide a chaser from station keeping to soft capture.</p>
 <span class="go">Launch</span>
 </a>
+</section>
+
+<section id="perception" class="rv">
+<p class="label">Featured project · Autonomous driving · CMPE 249</p>
+<h2>3D perception from a single camera</h2>
+<p class="muted">I built a ROS 2 pipeline that detects cars, pedestrians and other objects in 3D using a pretrained FCOS3D neural network and public nuScenes driving data. The work focused on getting the model’s outputs into the right coordinate frame, measuring performance and understanding where perception breaks down.</p>
+<ul class="caps">
+<li>
+<b>Performance</b>
+<span>Benchmarked latency, accuracy and memory use on RTX 4090 and A40 cloud GPUs. The corrected pipeline averaged 75 ms per frame on the RTX 4090, including output decoding.</span>
+</li>
+<li>
+<b>Robustness</b>
+<span>Measured a 33% relative drop in detection accuracy at 40% image brightness on the nuScenes mini validation set. Corrected model decoding and camera calibration bugs and added regression tests.</span>
+</li>
+</ul>
+<p style="margin-top:24px"><a href="https://github.com/crgonzales/sim2real-fcos3d-ros2/blob/main/docs/CMPE249_Gonzales_Project_Report.pdf" target="_blank" rel="noopener">Read the project paper →</a></p>
+<p><a href="https://github.com/crgonzales/sim2real-fcos3d-ros2" target="_blank" rel="noopener">Source code and evaluation results →</a></p>
 </section>
 
 <section class="rv">
@@ -223,7 +247,7 @@ html{scroll-behavior:auto}
 </section>
 
 <section class="rv">
-<p class="label">Also</p>
+<p class="label">More projects</p>
 <ul class="mini">
 <li>
 <h3>SPARK CubeSat Payload — IREC 2023</h3>
@@ -231,12 +255,18 @@ html{scroll-behavior:auto}
 </li>
 <li>
 <h3>NACA 4412 Aerodynamic Analysis</h3>
-<p>3D RANS k-ω simulation of a tapered half-wing in STAR-CCM+ at Re 5×10⁶, 0–10° AOA. Lift and moment coefficients matched finite-wing theory within 8% and 2.5%; recovered the published C<sub>m,ac</sub> ≈ −0.10 by sweeping the moment reference along the MAC.</p>
+<p>Simulated a tapered NACA 4412 half-wing in STAR-CCM+ across 0–10° angle of attack. Lift and moment coefficients matched finite-wing theory within 8% and 2.5%. Evaluated how pitching moment changes with angle of attack to locate the aerodynamic center.</p>
 </li>
-<li>
-<h3>Robotic Arm with EMG Sensor</h3>
-<p>Signal conditioning and thresholding to reject electrode noise, advancing control from on/off triggering to proportional grip actuation.</p>
-</li>
+</ul>
+</section>
+
+<section id="skills" class="rv">
+<p class="label">Technical skills</p>
+<ul class="mini">
+<li><h3>Guidance, navigation and control</h3><p>MATLAB/Simulink, 6DOF rigid body dynamics, orbital mechanics, Euler angles and quaternions, EKF/MEKF navigation, autopilot design, PID/LQR/MPC, linear stability analysis and control allocation.</p></li>
+<li><h3>Software and verification</h3><p>C/C++, Python, TypeScript, Git/GitLab, Linux, Docker, model based development, Simulink autocoding, Monte Carlo analysis, distributed and parallel processing, Runpod and regression testing.</p></li>
+<li><h3>AI and robotics</h3><p>Autonomous driving perception, ROS 2, PyTorch, MMDetection3D, FCOS3D, CUDA, nuScenes, camera calibration, RViz2 and Foxglove.</p></li>
+<li><h3>Hardware and engineering</h3><p>Creo, SolidWorks, model based definition, GD&amp;T, design for manufacturing, STAR-CCM+, Windchill, flight test fixtures, ground support equipment and Arduino/GPS integration.</p></li>
 </ul>
 </section>
 
