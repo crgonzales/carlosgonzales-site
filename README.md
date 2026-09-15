@@ -34,7 +34,8 @@ Two places reference it, and they must stay in sync:
 
 | Where | Value | Purpose |
 | ------------------------------- | -------------------------------- | ------------------------------------------------- |
-| `SIM_URL` (2nd `<script>` block) | `https://docking-sim.pages.dev/` | `src` of the background `<iframe>` |
+| `SIM_URL` (2nd `<script>` block) | `https://docking-sim.pages.dev/` | loaded into the `<iframe>` when Play is pressed (opens the first-docking mission) |
+| `SIM_BACKGROUND_URL` | `SIM_URL + '?mode=sandbox'` | initial `src` of the blurred background `<iframe>` (ambient autopilot approach, no briefing dialog) |
 | `#play-link` `href` | `/docking-sim` | Shareable link / fallback for non-immersive visits |
 
 `carlosgonzales.dev/docking-sim` is a Cloudflare **Redirect Rule** (302, wildcard
