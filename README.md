@@ -62,6 +62,7 @@ being iframe-able. Cloudflare Pages does not set either by default.
 
 - Copy is drawn from the GNC resume. Phone number and street-level address are
 deliberately omitted — public page.
-- The **Credits** section carries the CC BY 4.0 attribution required for the ESO
-starmap used in the simulator (creator, license, link, and the modification note).
+- The **Credits** section carries the CC BY 4.0 attributions required for the models the
+simulator displays (Crew Dragon by KUBAHA, F/A-18C Hornet by Rhine_Lab_Muelsyse: creator,
+license, link, and the modification note) plus the public-domain imagery and terrain sources.
 Keep it in sync with `apps/web/public/assets/ASSETS.md` in the sim repo.
