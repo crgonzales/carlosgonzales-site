@@ -354,8 +354,10 @@ if (!reduce) requestAnimationFrame(loop);
 (function(){
 // Deployed docking-sim (Cloudflare Pages). carlosgonzales.dev/docking-sim
 // redirects here too, and is what the Play link points at for non-immersive
-// visitors.
+// visitors. The bare URL opens the guided first-docking mission; the ambient
+// background uses the autopilot sandbox so no briefing dialog sits behind the text.
 var SIM_URL = 'https://docking-sim.pages.dev/';
+var SIM_BACKGROUND_URL = SIM_URL + '?mode=sandbox';
 
 var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var canImmerse = !reduce &&
@@ -375,7 +377,7 @@ if (!canImmerse) return;
 // bundle never competes with first paint of the portfolio text.
 window.addEventListener('load', function(){
 setTimeout(function(){
-simFrame.src = SIM_URL;
+simFrame.src = SIM_BACKGROUND_URL;
 simFrame.addEventListener('load', function(){
 simBg.classList.add('ready');
 }, { once: true });
@@ -384,6 +386,8 @@ simBg.classList.add('ready');
 
 function focusSim(e){
 if (e) e.preventDefault();
+// Play hands the visitor the mission, not the ambient sandbox.
+if (simFrame.getAttribute('src') !== SIM_URL) simFrame.src = SIM_URL;
 document.body.classList.add('focused');
 simFrame.removeAttribute('tabindex');
 exitBtn.focus();
