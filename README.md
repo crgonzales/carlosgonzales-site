@@ -1,70 +1,84 @@
-# carlosgonzales.dev
+# Carlos Gonzales · Engineering portfolio
 
-Personal site. Static HTML and assets, no build step — deliberately outside the docking-sim
-repo and outside its TRIP release flow.
+[**carlosgonzales.dev**](https://carlosgonzales.dev/)
 
-## Local preview
+A personal portfolio covering spacecraft guidance, navigation and control,
+flight hardware, and perception for autonomous vehicles. Static HTML and assets,
+with a live docking simulator embedded on supported desktop browsers.
+
+## Featured work
+
+- [Orbital Docking GNC Lab](https://github.com/crgonzales/docking-sim): six-DOF spacecraft dynamics, navigation, docking autopilot and verification.
+- [Autonomous-driving perception](https://github.com/crgonzales/sim2real-fcos3d-ros2): a ROS 2 camera pipeline for 3D object detection, with performance and robustness evaluation.
+
+The simulator has its own repository and Cloudflare Pages deployment. This
+repository owns the portfolio presentation.
+
+## Simulator architecture
+
+Development snapshot: **September 16, 2026**.
+
+**🟢 Done · 🟡 In progress · 🔴 TBC / Not started**
+
+Solid arrows show existing paths. Dashed arrows show unfinished integrations.
+
+[![Docking simulator architecture, including simulation, flight software, rendering, GNC tools, Monte Carlo and MATLAB.](assets/docking-architecture.png)](https://carlosgonzales.dev/#sim-architecture)
+
+[Open the zoomable diagram](https://carlosgonzales.dev/#sim-architecture) ·
+[SVG](assets/docking-architecture.svg) ·
+[Mermaid source](assets/docking-architecture.mmd)
+
+Colors apply to the scope named in each block, not deployment status. The green
+renderer is the existing Takram baseline; Volumetric Weather is in progress.
+The offline MATLAB/Simulink plant has been verified separately. Live MATLAB /
+SIL / HWIL integration and remote Runpod execution remain planned.
+
+The source map lives in `docs/6-memo/codebase-map.md` in the simulator repository.
+Keep both copies synchronized, preserving all 14 blocks, 20 connections and
+status assignments. The website serves a pre-rendered SVG with a zoom dialog;
+GitHub uses the matching PNG for reliable preview. No diagram engine runs in
+the visitor's browser.
+
+## Preview locally
 
 ```sh
 python3 -m http.server 8000
-# → http://localhost:8000
 ```
 
-## Deploy
+Open [localhost:8000](http://localhost:8000/). There is no build or installation step.
 
-Deployed as a Cloudflare Worker with static assets (`carlosgonzales-site`), served on the
-apex domain `carlosgonzales.dev`. Workers Builds is connected to this repo: every push to
-`main` runs `npx wrangler deploy` and publishes a new version automatically. No build
-command, no Node version, no install step.
+## Publish
 
-CLI alternative (authenticate first with `npx wrangler login` — never paste an API key
-into a chat or commit one):
+Cloudflare Workers Builds connects this repository's `main` branch to the
+**carlosgonzales-site** Worker. A push to `main` runs the configured
+`npx wrangler deploy` command and publishes the static site at
+[carlosgonzales.dev](https://carlosgonzales.dev/).
 
-```sh
-npx wrangler deploy
-```
+After pushing, check the **Workers Builds: carlosgonzales-site** GitHub status
+and verify the live page. The simulator deploys separately at
+[docking-sim.pages.dev](https://docking-sim.pages.dev/).
 
-## Wiring the sim
+## Simulator links and embed
 
-The simulator lives in the separate `docking-sim` repo and is deployed on its own as a
-Cloudflare Pages project: **https://docking-sim.pages.dev**. It is embedded here rather
-than merged in.
+| Reference | Purpose |
+| --- | --- |
+| `SIM_URL` | Loads `https://docking-sim.pages.dev/` when Play is pressed. |
+| `SIM_BACKGROUND_URL` | Uses `?mode=sandbox` for the ambient autopilot background. |
+| `#play-link` | Links to `/docking-sim`, a Cloudflare redirect to the separate simulator deployment. |
 
-Two places reference it, and they must stay in sync:
+The iframe loads after the portfolio's first paint. On supported desktop
+browsers it appears behind the content, blurred and dimmed, until Play makes
+it interactive. **Back to portfolio** or **Escape** returns to the page.
+Narrow screens, touch devices and reduced-motion preferences skip the embed
+and use the direct link instead.
 
-| Where | Value | Purpose |
-| ------------------------------- | -------------------------------- | ------------------------------------------------- |
-| `SIM_URL` (2nd `<script>` block) | `https://docking-sim.pages.dev/` | loaded into the `<iframe>` when Play is pressed (opens the first-docking mission) |
-| `SIM_BACKGROUND_URL` | `SIM_URL + '?mode=sandbox'` | initial `src` of the blurred background `<iframe>` (ambient autopilot approach, no briefing dialog) |
-| `#play-link` `href` | `/docking-sim` | Shareable link / fallback for non-immersive visits |
+If the simulator host changes, update all three references and preserve its
+iframe permissions. The `/docking-sim` route is a redirect, not a local build
+or reverse proxy.
 
-`carlosgonzales.dev/docking-sim` is a Cloudflare **Redirect Rule** (302, wildcard
-`https://carlosgonzales.dev/docking-sim*`) pointing at the Pages deployment. It is a
-redirect, not a reverse proxy — serving the sim *at* that path without a redirect would
-require rebuilding it with Vite `base: '/docking-sim/'`.
+## Files and attribution
 
-### How the embed behaves
-
-- The sim runs in a fixed, full-viewport `<iframe>` behind the content, blurred, dimmed
-  and `pointer-events: none`.
-- It is loaded on `window.load` + 400 ms so the three.js bundle never competes with
-  first paint.
-- Clicking **Play** adds `body.focused`: the iframe sharpens and becomes interactive,
-  the portfolio text and starfield fade out. **← Back to portfolio** or **Escape**
-  reverses it.
-- Narrow viewports, touch devices and `prefers-reduced-motion: reduce` skip the embed
-  entirely and just follow the `#play-link` href.
-
-If the sim ever moves, check that the new host does not send `X-Frame-Options: DENY` or a
-restrictive `Content-Security-Policy: frame-ancestors` — the whole approach depends on it
-being iframe-able. Cloudflare Pages does not set either by default.
-
-## Content notes
-
-- The docking project contains a dated architecture snapshot in `assets/docking-architecture.svg`, with the matching Mermaid source in `assets/docking-architecture.mmd`. It is exported from `docs/6-memo/codebase-map.md` in the simulator repository. Preserve all node IDs, connections and status assignments when updating it. The SVG is rendered in advance; visitors do not load Mermaid or a diagram engine. The page includes the status/connection legend and an accessible zoom dialog with a direct SVG fallback.
-- Copy is drawn from the GNC resume. Phone number and street-level address are
-deliberately omitted — public page.
-- The **Credits** section carries the CC BY 4.0 attributions required for the models the
-simulator displays (Crew Dragon by KUBAHA, F/A-18C Hornet by Rhine_Lab_Muelsyse: creator,
-license, link, and the modification note) plus the public-domain imagery and terrain sources.
-Keep it in sync with `apps/web/public/assets/ASSETS.md` in the sim repo.
+- `index.html`: page content, styling and interaction.
+- `assets/docking-architecture.*`: the shared architecture snapshot.
+- Public contact details omit phone number and street address.
+- Keep the Credits section aligned with the simulator's `apps/web/public/assets/ASSETS.md`, including model creators, licenses, modifications and imagery/terrain sources.
