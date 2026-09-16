@@ -1,6 +1,6 @@
 # carlosgonzales.dev
 
-Personal site. Static, single file, no build step — deliberately outside the docking-sim
+Personal site. Static HTML and assets, no build step — deliberately outside the docking-sim
 repo and outside its TRIP release flow.
 
 ## Local preview
@@ -61,6 +61,7 @@ being iframe-able. Cloudflare Pages does not set either by default.
 
 ## Content notes
 
+- The docking project contains a dated architecture snapshot in `assets/docking-architecture.svg`, with the matching Mermaid source in `assets/docking-architecture.mmd`. It is exported from `docs/6-memo/codebase-map.md` in the simulator repository. Preserve all node IDs, connections and status assignments when updating it. The SVG is rendered in advance; visitors do not load Mermaid or a diagram engine. The page includes the status/connection legend and an accessible zoom dialog with a direct SVG fallback.
 - Copy is drawn from the GNC resume. Phone number and street-level address are
 deliberately omitted — public page.
 - The **Credits** section carries the CC BY 4.0 attributions required for the models the

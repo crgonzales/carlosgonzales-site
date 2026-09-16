@@ -102,6 +102,31 @@ p{margin:0 0 18px}
 text-transform:uppercase;color:var(--accent);margin-bottom:7px;font-weight:500}
 .caps span{color:var(--muted);font-size:15.5px;line-height:1.6}
 
+/* ---------- project architecture ---------- */
+.architecture{margin:40px 0 0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--bg-2);scroll-margin-top:24px}
+.architecture-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.architecture-head h3{margin:0}
+.architecture time{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.diagram-legend{display:flex;gap:10px 20px;flex-wrap:wrap;margin:12px 0;font-size:13px;color:#adb3be;list-style:none;padding:0}
+.diagram-legend li{display:flex;align-items:center;gap:7px}
+.status-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+.status-done{background:#4ade80}.status-progress{background:#facc15}.status-tbc{background:#f87171}
+.diagram-lines,.architecture-note{font-size:13px;color:#adb3be;line-height:1.6;margin:12px 0 0}
+.diagram-image{display:block;width:100%;height:auto;border-radius:8px;background:var(--bg);margin:20px 0}
+.diagram-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.diagram-actions a,.diagram-actions button,.diagram-toolbar button{font:inherit;font-size:13px;border:1px solid #344153;border-radius:6px;padding:9px 13px;color:var(--accent);background:var(--bg);cursor:pointer}
+.diagram-actions a:hover,.diagram-actions button:hover,.diagram-toolbar button:hover{border-color:var(--accent);text-decoration:none}
+.diagram-actions a:focus-visible,.diagram-actions button:focus-visible,.diagram-toolbar button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#architecture-dialog{width:min(1400px,96vw);max-width:96vw;max-height:94dvh;margin:auto;padding:20px;color:var(--text);background:var(--bg-2);border:1px solid #344153;border-radius:12px}
+#architecture-dialog::backdrop{background:rgba(0,0,0,.86)}
+.diagram-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.diagram-toolbar h3{margin:0}.diagram-toolbar form{margin:0;display:flex;gap:8px}
+.diagram-viewport{overflow:auto;max-height:calc(94dvh - 190px);background:var(--bg);border-radius:8px;overscroll-behavior:contain}
+.diagram-viewport img{display:block;width:100%;height:auto;max-width:100%}
+.diagram-viewport[data-zoom="true"] img{width:1405px;max-width:none}
+body.diagram-open{overflow:hidden}
+@media(max-width:600px){.architecture{padding:16px}.diagram-legend{gap:8px 14px}#architecture-dialog{padding:12px}.diagram-viewport{max-height:calc(94dvh - 225px)}}
+
 /* ---------- roles ---------- */
 .role{padding:22px 0;border-bottom:1px solid var(--line)}
 .role:last-child{border-bottom:none}
@@ -197,7 +222,46 @@ html{scroll-behavior:auto}
 </li>
 </ul>
 <p style="margin-top:24px"><a href="https://github.com/crgonzales/docking-sim" target="_blank" rel="noopener">Source code and documentation →</a></p>
+<figure class="architecture" id="sim-architecture" aria-labelledby="architecture-title">
+<div class="architecture-head">
+<h3 id="architecture-title">Inside the simulator</h3>
+<time datetime="2026-09-16">Development snapshot · Sep 16, 2026</time>
+</div>
+<figcaption class="muted">How the simulation, flight software, visuals and verification tools connect.</figcaption>
+<ul class="diagram-legend" aria-label="Development status legend">
+<li><span class="status-dot status-done" aria-hidden="true"></span>Done</li>
+<li><span class="status-dot status-progress" aria-hidden="true"></span>In progress</li>
+<li><span class="status-dot status-tbc" aria-hidden="true"></span>TBC / Not started</li>
+</ul>
+<p class="diagram-lines">Solid arrows: existing paths. Dashed arrows: unfinished integrations.</p>
+<img class="diagram-image" src="/assets/docking-architecture.svg" width="1405" height="1412" loading="lazy" decoding="async" alt="Architecture map of 14 connected systems, from the React app and simulation core to telemetry, rendering, GNC tools and MATLAB. Green blocks are done, yellow are in progress, and red are not started.">
+<div class="diagram-actions">
+<a href="/assets/docking-architecture.svg" id="expand-architecture" aria-haspopup="dialog">Expand diagram ↗</a>
+<a href="/assets/docking-architecture.mmd" download>Download diagram source</a>
+</div>
+<p class="architecture-note">Status applies to the scope of each block. The current renderer and offline MATLAB model are complete; Volumetric Weather is in progress. Live MATLAB / SIL / HWIL integration and remote Runpod execution remain planned.</p>
+</figure>
 </section>
+
+<dialog id="architecture-dialog" aria-labelledby="architecture-dialog-title">
+<div class="diagram-toolbar">
+<h3 id="architecture-dialog-title">Simulator architecture</h3>
+<form method="dialog">
+<button type="button" id="diagram-zoom" aria-pressed="false">Zoom to 100%</button>
+<button type="submit" autofocus>Close</button>
+</form>
+</div>
+<ul class="diagram-legend" aria-label="Development status legend">
+<li><span class="status-dot status-done" aria-hidden="true"></span>Done</li>
+<li><span class="status-dot status-progress" aria-hidden="true"></span>In progress</li>
+<li><span class="status-dot status-tbc" aria-hidden="true"></span>TBC / Not started</li>
+<li>Solid: existing · Dashed: unfinished</li>
+</ul>
+<div class="diagram-viewport" id="diagram-viewport" tabindex="0" role="region" aria-label="Architecture diagram. At 100% zoom, scroll to explore all connections.">
+<img src="/assets/docking-architecture.svg" width="1405" height="1412" loading="lazy" alt="Full simulator architecture with all 14 blocks and 20 connections.">
+</div>
+<p class="architecture-note">September 16, 2026 snapshot. Use 100% zoom to read details, then scroll to explore.</p>
+</dialog>
 
 <section class="rv">
 <p class="label">Play it</p>
@@ -437,5 +501,33 @@ if (e.key === 'Escape' && document.body.classList.contains('focused')) exitSim()
 })();
 </script>
 
+<script>
+(function () {
+  var dialog = document.getElementById('architecture-dialog');
+  var expand = document.getElementById('expand-architecture');
+  var viewport = document.getElementById('diagram-viewport');
+  var zoom = document.getElementById('diagram-zoom');
+  if (!dialog || typeof dialog.showModal !== 'function') return;
+  expand.addEventListener('click', function (event) {
+    event.preventDefault();
+    viewport.dataset.zoom = 'false';
+    zoom.setAttribute('aria-pressed', 'false');
+    zoom.textContent = 'Zoom to 100%';
+    dialog.showModal();
+    viewport.scrollTo(0, 0);
+    document.body.classList.add('diagram-open');
+  });
+  zoom.addEventListener('click', function () {
+    var fullSize = viewport.dataset.zoom !== 'true';
+    viewport.dataset.zoom = String(fullSize);
+    zoom.setAttribute('aria-pressed', String(fullSize));
+    zoom.textContent = fullSize ? 'Fit to width' : 'Zoom to 100%';
+  });
+  dialog.addEventListener('close', function () {
+    document.body.classList.remove('diagram-open');
+    expand.focus();
+  });
+}());
+</script>
 </body>
 </html>
